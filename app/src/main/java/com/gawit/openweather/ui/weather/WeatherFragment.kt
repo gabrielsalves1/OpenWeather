@@ -25,7 +25,9 @@ class WeatherFragment : Fragment() {
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
 
         viewModel.weather.observe(viewLifecycleOwner) {
-            binding.txtMain.text = it!!.main.toString()
+            binding.txtMain.text = it!!.weather.toString()
+            binding.txtCity.text = it!!.name.toString()
+            binding.txtTemp.text = it!!.main.toString()
         }
 
         return binding.root
