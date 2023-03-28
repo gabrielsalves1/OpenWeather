@@ -4,11 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.weather.WeatherFragment">
+    tools:context=".ui.weather.WeatherFragment"
+    android:background="@drawable/gradient">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/editTxtCity"
+            android:hint="Buscar cidade"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:inputType="text"
+            android:layout_marginTop="46dp"
+            android:layout_margin="20dp"
+            android:drawableRight="@drawable/ic_search"
+            app:backgroundTint="#FFFFFF"
+            android:imeOptions="actionSearch"/>
 
         <TextView
             android:id="@+id/txtMain"
@@ -16,41 +34,57 @@
             android:layout_height="wrap_content"
             android:text="Weather"
             android:textColor="@color/white"
+            android:textSize="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="24dp"/>
+            app:layout_constraintTop_toBottomOf="@id/editTxtCity"
+            android:layout_marginTop="32dp"/>
 
         <TextView
             android:id="@+id/txtCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="64dp"
             android:text="City"
             android:textColor="@color/white"
+            android:textSize="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/txtMain" />
+            app:layout_constraintTop_toBottomOf="@id/txtMain"/>
 
         <ImageView
             android:id="@+id/icWeather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/txtCity"
+            app:layout_constraintTop_toBottomOf="@id/txtCity"
             android:src="@drawable/ic_cloud"/>
 
         <TextView
             android:id="@+id/txtTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="40dp"
             android:text="Temp"
             android:textColor="@color/white"
+            android:textSize="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/icWeather" />
+            app:layout_constraintTop_toBottomOf="@id/icWeather"/>
+
+        <TextView
+            android:id="@+id/txtWind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Wind"
+            android:textColor="@color/white"
+            android:textSize="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtTemp"
+            android:drawableRight="@drawable/ic_wind"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

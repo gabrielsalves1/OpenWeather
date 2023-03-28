@@ -1,57 +1,57 @@
 package com.gawit.openweather.model
 
 data class Weather(
-    val visibility: Int? = null,
-    val timezone: Int? = null,
-    val main: Main? = null,
-    val clouds: Clouds? = null,
-    val sys: Sys? = null,
-    val dt: Int? = null,
-    val coord: Coord? = null,
-    val weather: List<WeatherItem?>? = null,
-    val name: String? = null,
-    val cod: Int? = null,
-    val id: Int? = null,
-    val base: String? = null,
-    val wind: Wind? = null
+    val visibility: Int,
+    val timezone: Int,
+    val main: Main,
+    val clouds: Clouds,
+    val sys: Sys,
+    val dt: Int,
+    val coord: Coord,
+    val weather: List<WeatherItem?>,
+    val name: String,
+    val cod: Int,
+    val id: Int,
+    val base: String,
+    val wind: Wind
 )
 
 data class WeatherItem(
-    val icon: String? = null,
-    val description: String? = null,
-    val main: String? = null,
-    val id: Int? = null
+    val icon: String,
+    val description: String,
+    val main: String,
+    val id: Int
 )
 
 data class Sys(
-    val country: String? = null,
-    val sunrise: Int? = null,
-    val sunset: Int? = null,
-    val id: Int? = null,
-    val type: Int? = null
+    val country: String,
+    val sunrise: Int,
+    val sunset: Int,
+    val id: Int,
+    val type: Int
 )
 
 data class Main(
-    val temp: Any? = null,
-    val tempMin: Any? = null,
-    val humidity: Int? = null,
-    val pressure: Int? = null,
-    val feelsLike: Any? = null,
-    val tempMax: Any? = null
+    val temp: Double,
+    val tempMin: Double,
+    val humidity: Int,
+    val pressure: Int,
+    val feelsLike: Any,
+    val tempMax: Double
 )
 
 data class Coord(
-    val lon: Any? = null,
-    val lat: Any? = null
+    val lon: Any,
+    val lat: Any
 )
 
 data class Clouds(
-    val all: Int? = null
+    val all: Int
 )
 
 data class Wind(
-    val deg: Int? = null,
-    val speed: Any? = null,
-    val gust: Any? = null
+    val deg: Int,
+    val speed: Any,
+    val gust: Any
 )
 
