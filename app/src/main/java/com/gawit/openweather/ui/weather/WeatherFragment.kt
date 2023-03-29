@@ -1,13 +1,11 @@
 package com.gawit.openweather.ui.weather
 
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -35,13 +33,16 @@ class WeatherFragment : Fragment() {
 
         if (binding.editTxtCity.text.isBlank()) {
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
-            fetchLocation()
+            getLocation()
         }
 
         binding.editTxtCity.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val weather = viewModel.getWeather("-23.555628696586094", "-46.64110725122624", "92fb97c9f7251535cb9d3869bfa39f5a")
-                bindingWeather(weather!!)
+                val city = viewModel.getCity(binding.editTxtCity.text.toString(), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!!
+
+                bindingWeather(viewModel.getWeather(
+                    city[0].lat.toString(), city[0].lon.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
+                )
                 true
             } else {
                 false
@@ -51,7 +52,7 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
-    private fun fetchLocation() {
+    private fun getLocation() {
         val task = fusedLocationProviderClient.lastLocation
 
         if (ActivityCompat.checkSelfPermission(requireContext(),
@@ -67,14 +68,13 @@ class WeatherFragment : Fragment() {
 
         task.addOnSuccessListener { location ->
             if (location != null) {
-                val weather = viewModel.getWeather(location.latitude.toString(), location.longitude.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")
-                bindingWeather(weather!!)
+                bindingWeather(viewModel.getWeather(location.latitude.toString(), location.longitude.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!)
             }
         }
     }
 
     private fun bindingWeather(weather: Weather) {
-        binding.txtMain.text = weather.weather.get(0)?.main
+        binding.txtMain.text = weather.weather[0]?.main
         binding.txtCity.text = weather.name
         binding.txtTemp.text = convertKelvinToCelsius(weather.main.temp)
         binding.txtWind.text = weather.wind.speed.toString()

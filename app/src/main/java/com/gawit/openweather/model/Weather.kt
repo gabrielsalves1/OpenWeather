@@ -8,7 +8,7 @@ data class Weather(
     val sys: Sys,
     val dt: Int,
     val coord: Coord,
-    val weather: List<WeatherItem?>,
+    val weather: List<WeatherItem>,
     val name: String,
     val cod: Int,
     val id: Int,
@@ -36,13 +36,13 @@ data class Main(
     val tempMin: Double,
     val humidity: Int,
     val pressure: Int,
-    val feelsLike: Any,
+    val feelsLike: Double,
     val tempMax: Double
 )
 
 data class Coord(
-    val lon: Any,
-    val lat: Any
+    val lon: Double,
+    val lat: Double
 )
 
 data class Clouds(
@@ -51,7 +51,7 @@ data class Clouds(
 
 data class Wind(
     val deg: Int,
-    val speed: Any,
-    val gust: Any
+    val speed: Double,
+    val gust: Double
 )
 
