@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/editTxtCity"
-            android:hint="Buscar cidade"
+            android:hint="@string/search_city"
             android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:inputType="text"
             android:layout_marginTop="46dp"
             android:layout_margin="20dp"
-            android:drawableRight="@drawable/ic_search"
+            android:drawableEnd="@drawable/ic_search"
             app:backgroundTint="#FFFFFF"
             android:imeOptions="actionSearch"/>
 
@@ -32,9 +32,8 @@
             android:id="@+id/txtMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weather"
             android:textColor="@color/white"
-            android:textSize="40dp"
+            android:textSize="40sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTxtCity"
@@ -45,31 +44,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
-            android:text="City"
             android:textColor="@color/white"
-            android:textSize="40dp"
+            android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtMain"/>
 
-        <ImageView
-            android:id="@+id/icWeather"
+        <ProgressBar
+            android:id="@+id/spinner"
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtCity"
-            android:src="@drawable/ic_cloud"/>
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/icWeather"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_cloud"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtCity" />
 
         <TextView
             android:id="@+id/txtTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="Temp"
             android:textColor="@color/white"
-            android:textSize="40dp"
+            android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/icWeather"/>
@@ -79,12 +88,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="Wind"
             android:textColor="@color/white"
-            android:textSize="28dp"
+            android:textSize="28sp"
+            android:visibility="invisible"
+            app:drawableRightCompat="@drawable/ic_wind"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtTemp"
-            android:drawableRight="@drawable/ic_wind"/>
+            app:layout_constraintTop_toBottomOf="@id/txtTemp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

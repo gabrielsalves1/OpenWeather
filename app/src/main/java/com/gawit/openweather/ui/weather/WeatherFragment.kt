@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.gawit.openweather.R
 import com.gawit.openweather.databinding.FragmentWeatherBinding
 import com.gawit.openweather.model.Weather
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -30,6 +32,12 @@ class WeatherFragment : Fragment() {
     ): View? {
         binding = FragmentWeatherBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
+
+        val countries: Array<out String> = resources.getStringArray(R.array.countries_array)
+
+        ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, countries).also { adapter ->
+            binding.editTxtCity.setAdapter(adapter)
+        }
 
         if (binding.editTxtCity.text.isBlank()) {
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -78,6 +86,9 @@ class WeatherFragment : Fragment() {
         binding.txtCity.text = weather.name
         binding.txtTemp.text = convertKelvinToCelsius(weather.main.temp)
         binding.txtWind.text = weather.wind.speed.toString()
+        binding.icWeather.visibility = View.VISIBLE
+        binding.txtWind.visibility = View.VISIBLE
+        binding.spinner.visibility = View.GONE
     }
 
     private fun convertKelvinToCelsius(tempKelvin: Double): String {
