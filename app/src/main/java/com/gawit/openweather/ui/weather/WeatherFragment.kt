@@ -46,7 +46,7 @@ class WeatherFragment : Fragment() {
 
         binding.editTxtCity.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val city = viewModel.getCity(binding.editTxtCity.text.toString(), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!!
+                val city = viewModel.getCity(binding.editTxtCity.text.toString().replace(" ", "+"), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!!
 
                 bindingWeather(viewModel.getWeather(
                     city[0].lat.toString(), city[0].lon.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
