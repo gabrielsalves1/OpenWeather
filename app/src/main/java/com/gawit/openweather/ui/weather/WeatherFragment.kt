@@ -33,17 +33,26 @@ class WeatherFragment : Fragment() {
         binding = FragmentWeatherBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
 
+        autocompleteCity()
+
+        if (binding.editTxtCity.text.isBlank()) {
+            getLocation()
+        }
+
+        searchCity()
+
+        return binding.root
+    }
+
+    private fun autocompleteCity() {
         val countries: Array<out String> = resources.getStringArray(R.array.countries_array)
 
         ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, countries).also { adapter ->
             binding.editTxtCity.setAdapter(adapter)
         }
+    }
 
-        if (binding.editTxtCity.text.isBlank()) {
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
-            getLocation()
-        }
-
+    private fun searchCity() {
         binding.editTxtCity.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val city = viewModel.getCity(binding.editTxtCity.text.toString().replace(" ", "+"), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!!
@@ -56,11 +65,10 @@ class WeatherFragment : Fragment() {
                 false
             }
         }
-
-        return binding.root
     }
 
     private fun getLocation() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         val task = fusedLocationProviderClient.lastLocation
 
         if (ActivityCompat.checkSelfPermission(requireContext(),
@@ -76,6 +84,8 @@ class WeatherFragment : Fragment() {
 
         task.addOnSuccessListener { location ->
             if (location != null) {
+                val weather = viewModel.getWeather(location.latitude.toString(), location.longitude.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
+                println(weather)
                 bindingWeather(viewModel.getWeather(location.latitude.toString(), location.longitude.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!)
             }
         }
@@ -84,14 +94,10 @@ class WeatherFragment : Fragment() {
     private fun bindingWeather(weather: Weather) {
         binding.txtMain.text = weather.weather[0]?.main
         binding.txtCity.text = weather.name
-        binding.txtTemp.text = convertKelvinToCelsius(weather.main.temp)
+        binding.txtTemp.text = weather.convertKelvinToCelsius().toString()
         binding.txtWind.text = weather.wind.speed.toString()
         binding.icWeather.visibility = View.VISIBLE
         binding.txtWind.visibility = View.VISIBLE
         binding.spinner.visibility = View.GONE
-    }
-
-    private fun convertKelvinToCelsius(tempKelvin: Double): String {
-        return "${(tempKelvin - 273.15).roundToInt()}º"
     }
 }

@@ -1,5 +1,7 @@
 package com.gawit.openweather.model
 
+import kotlin.math.roundToInt
+
 data class Weather(
     val visibility: Int,
     val timezone: Int,
@@ -14,7 +16,11 @@ data class Weather(
     val id: Int,
     val base: String,
     val wind: Wind
-)
+) {
+    fun convertKelvinToCelsius(): Int {
+        return (main.temp - 273.15).roundToInt()
+    }
+}
 
 data class WeatherItem(
     val icon: String,
