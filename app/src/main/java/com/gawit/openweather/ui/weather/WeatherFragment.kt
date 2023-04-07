@@ -15,7 +15,10 @@ import com.gawit.openweather.databinding.FragmentWeatherBinding
 import com.gawit.openweather.model.Weather
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlin.math.roundToInt
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
@@ -35,13 +38,17 @@ class WeatherFragment : Fragment() {
 
         autocompleteCity()
 
-        if (binding.editTxtCity.text.isBlank()) {
-            getLocation()
-        }
+        getLocationAndBinding()
 
         searchCity()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getLocationAndBinding()
     }
 
     private fun autocompleteCity() {
@@ -52,14 +59,18 @@ class WeatherFragment : Fragment() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun searchCity() {
         binding.editTxtCity.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val city = viewModel.getCity(binding.editTxtCity.text.toString().replace(" ", "+"), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!!
+                GlobalScope.launch(Dispatchers.Main) {
+                    val city = viewModel.getCity(binding.editTxtCity.text.toString().replace(" ", "+"), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!!
 
-                bindingWeather(viewModel.getWeather(
-                    city[0].lat.toString(), city[0].lon.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
-                )
+                    bindingWeather(viewModel.getWeather(
+                        city[0].lat.toString(), city[0].lon.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
+                    )
+                }
+
                 true
             } else {
                 false
@@ -67,26 +78,44 @@ class WeatherFragment : Fragment() {
         }
     }
 
-    private fun getLocation() {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        val task = fusedLocationProviderClient.lastLocation
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun getLocationAndBinding() {
+        if (binding.editTxtCity.text.isBlank()) {
+            fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(requireContext())
+            val task = fusedLocationProviderClient.lastLocation
 
-        if (ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
-            return
-        }
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    101
+                )
+                return
+            }
 
-        task.addOnSuccessListener { location ->
-            if (location != null) {
-                val weather = viewModel.getWeather(location.latitude.toString(), location.longitude.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
-                println(weather)
-                bindingWeather(viewModel.getWeather(location.latitude.toString(), location.longitude.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!)
+            task.addOnSuccessListener { location ->
+                if (location != null) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        bindingWeather(
+                            viewModel.getWeather(
+                                location.latitude.toString(),
+                                location.longitude.toString(),
+                                "92fb97c9f7251535cb9d3869bfa39f5a"
+                            )!!
+                        )
+                    }
+                }
             }
         }
     }
