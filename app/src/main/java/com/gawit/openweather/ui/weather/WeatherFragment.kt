@@ -121,7 +121,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun bindingWeather(weather: Weather) {
-        binding.txtMain.text = weather.weather[0]?.main
+        binding.txtMain.text = weather.weather[0].main
         binding.txtCity.text = weather.name
         binding.txtTemp.text = weather.convertKelvinToCelsius().toString()
         binding.txtWind.text = weather.wind.speed.toString()
