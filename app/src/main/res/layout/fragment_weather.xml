@@ -13,20 +13,20 @@
 
         <AutoCompleteTextView
             android:id="@+id/editTxtCity"
-            android:hint="@string/search_city"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:inputType="text"
-            android:layout_marginTop="46dp"
             android:layout_margin="20dp"
+            android:layout_marginTop="46dp"
             android:drawableEnd="@drawable/ic_search"
+            android:hint="@string/search_city"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:backgroundTint="#FFFFFF"
-            android:imeOptions="actionSearch"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtMain"
@@ -38,6 +38,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTxtCity"
             android:layout_marginTop="32dp"/>
+
+        <ImageButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:src="@drawable/ic_star"
+            android:background="@drawable/gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTxtCity"
+            app:layout_constraintStart_toEndOf="@id/txtMain"
+            android:layout_marginTop="40dp" />
 
         <TextView
             android:id="@+id/txtCity"

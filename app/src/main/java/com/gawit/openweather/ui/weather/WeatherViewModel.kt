@@ -1,16 +1,31 @@
 package com.gawit.openweather.ui.weather
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.gawit.openweather.api.WeatherApi
+import com.gawit.openweather.database.OpenWeatherDatabase
 import com.gawit.openweather.model.City
 import com.gawit.openweather.model.Weather
+import com.gawit.openweather.repository.CityRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class WeatherViewModel : ViewModel() {
+class WeatherViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: CityRepository
+
+    init {
+        val cityDao = OpenWeatherDatabase.getDatabase(application).cityDao()
+        repository = CityRepository(cityDao)
+    }
+
+    fun insert(city: City) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insert(city)
+        }
+    }
+
     suspend fun getWeather(lat: String, lon: String, appid: String): Weather? {
         return withContext(Dispatchers.IO) {
             try {

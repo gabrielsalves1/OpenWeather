@@ -12,18 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gawit.openweather.R
 import com.gawit.openweather.databinding.FragmentWeatherBinding
+import com.gawit.openweather.model.City
 import com.gawit.openweather.model.Weather
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private lateinit var viewModel: WeatherViewModel
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var city = ArrayList<City>()
 
     companion object {
         fun newInstance() = WeatherFragment()
@@ -41,6 +40,8 @@ class WeatherFragment : Fragment() {
         getLocationAndBinding()
 
         searchCity()
+
+        addFavoriteCity()
 
         return binding.root
     }
@@ -64,11 +65,13 @@ class WeatherFragment : Fragment() {
         binding.editTxtCity.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    val city = viewModel.getCity(binding.editTxtCity.text.toString().replace(" ", "+"), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!!
+                    city.add(viewModel.getCity(binding.editTxtCity.text.toString().replace(" ", "+"), 1, "92fb97c9f7251535cb9d3869bfa39f5a")!![0])
 
                     bindingWeather(viewModel.getWeather(
                         city[0].lat.toString(), city[0].lon.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
                     )
+
+                    binding.btnFavorite.visibility = View.VISIBLE
                 }
 
                 true
@@ -129,4 +132,11 @@ class WeatherFragment : Fragment() {
         binding.txtWind.visibility = View.VISIBLE
         binding.spinner.visibility = View.GONE
     }
+
+    private fun addFavoriteCity() {
+        binding.btnFavorite.setOnClickListener {
+            viewModel.insert(city[0])
+        }
+    }
+
 }

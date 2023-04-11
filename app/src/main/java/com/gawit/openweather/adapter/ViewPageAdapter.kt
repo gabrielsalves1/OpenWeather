@@ -12,7 +12,6 @@ class ViewPageAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter
     }
 
     override fun createFragment(position: Int): Fragment {
-        println("Position $position")
         when(position) {
             0 -> return WeatherFragment()
             1 -> return FavoritesFragment()

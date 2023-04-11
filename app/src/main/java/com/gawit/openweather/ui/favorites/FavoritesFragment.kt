@@ -1,32 +1,46 @@
 package com.gawit.openweather.ui.favorites
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gawit.openweather.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.gawit.openweather.adapter.CityAdapter
+import com.gawit.openweather.databinding.FragmentFavoritesBinding
+import com.gawit.openweather.model.City
 
 class FavoritesFragment : Fragment() {
+    private lateinit var binding: FragmentFavoritesBinding
+    private lateinit var viewModel: FavoritesViewModel
 
     companion object {
         fun newInstance() = FavoritesFragment()
     }
 
-    private lateinit var viewModel: FavoritesViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[FavoritesViewModel::class.java]
+
+        setAdapter()
+
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+    fun setAdapter() {
+        binding.rcCities.layoutManager = LinearLayoutManager(requireContext())
+        binding.rcCities.setHasFixedSize(true)
+        viewModel.findAll.observe(viewLifecycleOwner) { listCity ->
+            val adapter = CityAdapter(requireContext(), listCity)
+            binding.rcCities.adapter = adapter
 
+            adapter.onItemClick = {
+                
+            }
+        }
+    }
 }
