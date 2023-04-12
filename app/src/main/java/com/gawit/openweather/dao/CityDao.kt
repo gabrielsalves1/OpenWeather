@@ -14,4 +14,7 @@ interface CityDao {
 
     @Query("SELECT * FROM city ORDER BY id ASC")
     fun findAll(): LiveData<List<City>>
+
+    @Query("SELECT * FROM city WHERE id = :id")
+    fun findById(id: Int): LiveData<City>
 }

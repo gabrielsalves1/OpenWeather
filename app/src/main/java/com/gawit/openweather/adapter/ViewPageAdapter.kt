@@ -12,10 +12,10 @@ class ViewPageAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter
     }
 
     override fun createFragment(position: Int): Fragment {
-        when(position) {
-            0 -> return WeatherFragment()
-            1 -> return FavoritesFragment()
-            else -> return WeatherFragment()
+        return when(position) {
+            0 -> WeatherFragment()
+            1 -> FavoritesFragment()
+            else -> WeatherFragment()
         }
     }
 }

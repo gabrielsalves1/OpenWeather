@@ -2,6 +2,7 @@ package com.gawit.openweather.ui.weather
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.gawit.openweather.api.WeatherApi
 import com.gawit.openweather.database.OpenWeatherDatabase
@@ -24,6 +25,10 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO) {
             repository.insert(city)
         }
+    }
+
+    fun findById(id: Int): LiveData<City> {
+        return repository.findById(id)
     }
 
     suspend fun getWeather(lat: String, lon: String, appid: String): Weather? {

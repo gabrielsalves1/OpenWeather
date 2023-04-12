@@ -83,7 +83,17 @@ class WeatherFragment : Fragment() {
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun getLocationAndBinding() {
-        if (binding.editTxtCity.text.isBlank()) {
+        if (arguments?.isEmpty == false && binding.editTxtCity.text.isBlank()) {
+            arguments?.getInt("id")?.let { id ->
+                viewModel.findById(id).observe(viewLifecycleOwner) { city ->
+                    GlobalScope.launch(Dispatchers.Main) {
+                        bindingWeather(viewModel.getWeather(
+                            city.lat.toString(), city.lon.toString(), "92fb97c9f7251535cb9d3869bfa39f5a")!!
+                        )
+                    }
+                }
+            }
+        } else if (binding.editTxtCity.text.isBlank()) {
             fusedLocationProviderClient =
                 LocationServices.getFusedLocationProviderClient(requireContext())
             val task = fusedLocationProviderClient.lastLocation
@@ -120,6 +130,7 @@ class WeatherFragment : Fragment() {
                     }
                 }
             }
+
         }
     }
 

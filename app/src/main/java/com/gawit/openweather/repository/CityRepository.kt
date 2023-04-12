@@ -12,4 +12,8 @@ class CityRepository(
     suspend fun insert(city: City) {
         cityDao.insert(city)
     }
+
+    fun findById(id: Int): LiveData<City> {
+        return cityDao.findById(id)
+    }
 }

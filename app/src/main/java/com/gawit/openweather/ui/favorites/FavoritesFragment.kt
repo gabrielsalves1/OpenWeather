@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gawit.openweather.R
 import com.gawit.openweather.adapter.CityAdapter
+import com.gawit.openweather.adapter.ViewPageAdapter
 import com.gawit.openweather.databinding.FragmentFavoritesBinding
 import com.gawit.openweather.model.City
+import com.gawit.openweather.ui.weather.WeatherFragment
 
 class FavoritesFragment : Fragment() {
     private lateinit var binding: FragmentFavoritesBinding
@@ -31,7 +34,7 @@ class FavoritesFragment : Fragment() {
         return binding.root
     }
 
-    fun setAdapter() {
+    private fun setAdapter() {
         binding.rcCities.layoutManager = LinearLayoutManager(requireContext())
         binding.rcCities.setHasFixedSize(true)
         viewModel.findAll.observe(viewLifecycleOwner) { listCity ->
@@ -39,7 +42,11 @@ class FavoritesFragment : Fragment() {
             binding.rcCities.adapter = adapter
 
             adapter.onItemClick = {
-                
+                parentFragmentManager.beginTransaction().addToBackStack("favoriteWeather").add(R.id.frame_layout, WeatherFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt("id", it.id)
+                    }
+                }).commit()
             }
         }
     }
